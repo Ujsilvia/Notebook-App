@@ -82,6 +82,7 @@ export async function LoginUser(
     const { id } = user;
     const token = generateToken({ id });
     const validUser = await bcrypt.compare(req.body.password, user.password);
+    res.cookie("auth_user", token, { maxAge: 1000 * 60 * 60 });
     if (!validUser) {
       res.status(401);
       res.json({ message: "incorrect password" });
@@ -108,10 +109,16 @@ export async function getUsers(
     const limit = req.query.limit as number | undefined;
     const offset = req.query.offset as number | undefined;
     // const record = await LoginInstance.findAll({where:{}, limit, offset})
-    const record = await TodoInstance.findAndCountAll({where:{}, limit, offset, include:[{
-      model:LoginInstance,
-      as: 'notes'
-    }]
+    const record = await TodoInstance.findAndCountAll({
+      where: {},
+      limit,
+      offset,
+      include: [
+        {
+          model: LoginInstance,
+          as: "notes",
+        },
+      ],
     });
     res.status(200);
     res.json({
@@ -126,4 +133,3 @@ export async function getUsers(
     });
   }
 }
-

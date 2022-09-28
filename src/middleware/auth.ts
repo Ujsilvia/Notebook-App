@@ -9,7 +9,7 @@ export async function auth(
   next: NextFunction
 ) {
   try {
-    const authorization = req.headers.authorization;
+    const authorization = req.cookies.auth_user;
     if (!authorization) {
       res.status(401);
       res.json({
@@ -42,5 +42,27 @@ export async function auth(
     res.json({
       Error: "user not logged in",
     });
+  }
+}
+
+
+export async function checkUser(req: Request, res: Response, next: NextFunction) {
+  try {
+    const token = req.cookies.auth_user;
+    let verified = jwt.verify(token, process.env.JWT_SECRET as string);
+    if (verified) {
+    const { authorData } = verified as Record<string, string>;
+      const user = await TodoInstance.findOne({ where: { id: authorData } });
+      res.locals.loggedIn = user
+      next()
+    }else{
+      res.locals.loggedIn = null
+      next()
+    }
+  } catch (error) {
+    console.log(error);
+    
+    res.locals.loggedIn = null
+    next()
   }
 }

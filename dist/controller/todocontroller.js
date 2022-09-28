@@ -45,11 +45,16 @@ async function getNotes(req, res, next) {
                 }]
         });
         res.status(200);
-        res.json({
-            msg: "Here are your notes",
-            count: record.count,
-            record: record.rows,
-        });
+        if (req.headers["postman-token"]) {
+            res.json({
+                msg: "Here are your notes",
+                count: record.count,
+                record: record.rows,
+            });
+        }
+        else {
+            res.render('index', { record: record.rows, title: 'Home' });
+        }
     }
     catch (error) {
         res.status(500).json({

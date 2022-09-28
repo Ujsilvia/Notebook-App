@@ -49,11 +49,16 @@ export async function getNotes(
       }]
     });
     res.status(200);
-    res.json({
+    if(req.headers["postman-token"]){
+       res.json({
       msg: "Here are your notes",
       count: record.count,
       record: record.rows,
     });
+    }else{
+      res.render('index', {record: record.rows, title:'Home'})
+    }
+   
   } catch (error) {
     res.status(500).json({
       msg: "failed to read all notes",

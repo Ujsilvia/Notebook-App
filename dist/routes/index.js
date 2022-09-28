@@ -10,4 +10,6 @@ const usercontroller_1 = require("../controller/usercontroller");
 router.post("/register", usercontroller_1.RegisterUser);
 router.post("/login", usercontroller_1.LoginUser);
 router.get('/allusers', usercontroller_1.getUsers);
+// router.put('/update', verifyToken, updateAuthor)
+// router.delete('/delete', verifyToken, deleteAccount)
 exports.default = router;

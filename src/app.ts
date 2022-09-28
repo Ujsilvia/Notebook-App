@@ -4,6 +4,7 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 
+import pagesRouter from "./routes/pages";
 import indexRouter from "./routes/index";
 import todoRouter from "./routes/todo";
 import db from "./config/database.config";
@@ -19,15 +20,16 @@ db.sync()
 const app = express();
 
 // view engine setup
-app.set("views", path.join(__dirname, ".."));
+app.set("views", path.join(__dirname, "..", "views"));
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join("public")));
 
+app.use("/", pagesRouter)
 app.use("/index", indexRouter);
 app.use("/todo", todoRouter);
 

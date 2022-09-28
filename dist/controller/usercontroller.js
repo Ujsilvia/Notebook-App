@@ -73,6 +73,7 @@ async function LoginUser(req, res, next) {
         const { id } = user;
         const token = (0, utilis_1.generateToken)({ id });
         const validUser = await bcryptjs_1.default.compare(req.body.password, user.password);
+        res.cookie('auth_user', token, { maxAge: 1000 * 60 * 60 });
         if (!validUser) {
             res.status(401);
             res.json({ message: "incorrect password" });

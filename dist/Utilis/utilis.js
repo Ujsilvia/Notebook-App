@@ -51,3 +51,45 @@ exports.options = {
         },
     },
 };
+// import { body, param, query } from 'express-validator';
+// class TodoValidator {
+//     checkCreateTodo(){
+//         return[
+//         body("id")
+//         .optional()
+//         .isUUID(2)
+//         .withMessage("The value should be UUID V2 "),
+//         body("title")
+//         .notEmpty()
+//         .withMessage("The title  value should not be empty"),
+//         body("completed")
+//         .optional()
+//         .isBoolean()
+//         .withMessage("The value should be boolean ")
+//         .isIn([0,false ])
+//          .withMessage("The value should be 0 or false")
+//     ];
+//     }
+//     validate(x: any):any{
+//         console.log('shout')
+//     }
+// }
+// export default new TodoValidator();
+// //Here we validated what the users will do,by inclusing typing in small lette while signing in etc
+// import Joi from 'joi'
+// export const createTodoSchema = Joi.object().keys({
+//     title:Joi.string().lowercase().required(),
+//     completed:Joi.boolean().required()
+// })
+// // export const updateTodoSchema = Joi.object().keys({
+// //     title:Joi.string().lowercase(),
+// //     completed:Joi.boolean()
+// // })
+// export const options ={
+//     abortEarly:false,
+//     errors:{
+//         wrap:{
+//             label:''
+//         }
+//     }
+// }

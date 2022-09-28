@@ -40,7 +40,7 @@ const addNote = (text = "") => {
          <i class="save fas fa-save"></i>
          <i class="trash fas fa-trash"></i> 
     </div>
-    <textarea>${text}</textarea>
+    <textarea class="notetext">${text}</textarea>
     `;
 
     note.querySelector(".trash").addEventListener(

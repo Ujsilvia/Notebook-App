@@ -3,13 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.auth = void 0;
+exports.checkUser = exports.auth = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const secret = process.env.JWT_SECRET;
 const todomodel_1 = require("../model/todomodel");
 async function auth(req, res, next) {
     try {
-        const authorization = req.headers.authorization;
+        const authorization = req.cookies.auth_user;
         if (!authorization) {
             res.status(401);
             res.json({
@@ -44,3 +44,25 @@ async function auth(req, res, next) {
     }
 }
 exports.auth = auth;
+async function checkUser(req, res, next) {
+    try {
+        const token = req.cookies.auth_user;
+        let verified = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+        if (verified) {
+            const { authorData } = verified;
+            const user = await todomodel_1.TodoInstance.findOne({ where: { id: authorData } });
+            res.locals.loggedIn = user;
+            next();
+        }
+        else {
+            res.locals.loggedIn = null;
+            next();
+        }
+    }
+    catch (error) {
+        console.log(error);
+        res.locals.loggedIn = null;
+        next();
+    }
+}
+exports.checkUser = checkUser;
